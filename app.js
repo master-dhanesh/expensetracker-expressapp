@@ -5,6 +5,9 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+// db connection
+require("./config/db");
+
 var indexRouter = require("./routes/index.routes");
 var expenseRouter = require("./routes/expenses.routes");
 
@@ -36,7 +39,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render("error");
+    res.render("error", { title: "Expense Tracker | Error" });
 });
 
 module.exports = app;

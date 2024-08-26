@@ -2,6 +2,13 @@
     <%- include("partials/nav")%>
         <!--  -->
         <h1>Create Expense</h1>
+        <form action="/expense/create" method="post">
+            <input type="number" name="amount" placeholder="Amount">
+            <input type="text" name="category" placeholder="Category">
+            <input type="text" name="remark" placeholder="Remark">
+            <input type="text" name="paymentmode" placeholder="Payment Mode">
+            <button>Log Expense</button>
+        </form>
 
         <!--  -->
         <%- include("partials/footer")%>
