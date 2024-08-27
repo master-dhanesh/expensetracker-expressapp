@@ -1,0 +1,16 @@
+<%- include("partials/header")%>
+    <%- include("partials/nav")%>
+        <!--  -->
+        <br>
+        <h1>Update Expense</h1>
+        <form action="/expense/update/<%= expense._id%>" method="post">
+            <input type="text" name="title" placeholder="Title" value="<%= expense.title%>">
+            <input type="number" name="amount" placeholder="Amount" value="<%= expense.amount%>">
+            <input type="text" name="category" placeholder="Category" value="<%= expense.category%>">
+            <input type="text" name="remark" placeholder="Remark" value="<%= expense.remark%>">
+            <input type="text" name="paymentmode" placeholder="Payment Mode" value="<%= expense.paymentmode%>">
+            <button>Edit Expense</button>
+        </form>
+
+        <!--  -->
+        <%- include("partials/footer")%>

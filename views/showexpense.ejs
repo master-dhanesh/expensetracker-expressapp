@@ -2,6 +2,17 @@
     <%- include("partials/nav")%>
         <!--  -->
         <h1>Watch Expense</h1>
+        <ul>
+            <% expenses.forEach(function(expense) { %>
+                <li>
+
+                    <%= expense.title %> |
+                        <a href="/expense/details/<%= expense.id%>">Details</a>
+
+
+                </li>
+                <% }) %>
+        </ul>
 
         <!--  -->
         <%- include("partials/footer")%>

@@ -1,0 +1,27 @@
+<%- include("partials/header")%>
+    <%- include("partials/nav")%>
+        <!--  -->
+        <br>
+        <h1>Expense Details</h1>
+        <br>
+        <h2>
+            <%= expense.title %>
+        </h2>
+        <p>
+            <%= expense.amount %>
+        </p>
+        <p>
+            <%= expense.category %>
+        </p>
+        <p>
+            <%= expense.remark %>
+        </p>
+        <p>
+            <%= expense.paymentmode %>
+        </p>
+        <br>
+        <a href="/expense/delete/<%= expense._id%>">Delete</a>
+        <a href="/expense/update/<%= expense._id%>">Edit</a>
+
+        <!--  -->
+        <%- include("partials/footer")%>
