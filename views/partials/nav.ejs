@@ -1,7 +1,15 @@
-<nav>
-    <img width="70" src="https://cdn-icons-png.flaticon.com/512/5501/5501375.png" alt="">
-    <a href="/">Home</a>
-    <a href="/expense/create">Log Expense</a>
-    <a href="/expense/show">Watch Expenses</a>
-    <a href="/about">About</a>
+<nav class="flex">
+
+    <img width="70" src="https://cdn-icons-png.flaticon.com/512/5501/5501375.png" alt="" />
+
+    <% if(user){ %>
+        <a href="/user/profile">Home</a>
+        <a href="/expense/create">Log Expense</a>
+        <a href="/expense/show">Watch Expenses</a>
+        <%}else{ %>
+            <a href="/">Home</a>
+            <% }%>
+                <a href="/about">About</a>
+
+
 </nav>
