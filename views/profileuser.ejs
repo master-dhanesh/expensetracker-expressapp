@@ -1,5 +1,6 @@
 <%- include("partials/header")%>
     <%- include("partials/nav")%>
+    <%= message%> <button class="reload">X</button>
         <!--  -->
         <div">
             <h1 class="text-5xl">User Profile</h1>
@@ -7,4 +8,11 @@
             </div>
 
             <!--  -->
+            <script>
+                const reload = document.querySelector('.reload');
+                reload.addEventListener('click', () => {
+                    location.reload();
+                    reload.style.display = 'none';
+                });
+            </script>
             <%- include("partials/footer")%>

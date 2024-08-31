@@ -1,5 +1,5 @@
 {
-    "watch": ["views", "routes", "public"],
+    "watch": ["views", "routes", "public", "app.js"],
     "ext": "js,json,ejs",
     "ignore": ["node_modules", ".gitignore"],
     "exec": "npm run tailwind:css && npm start"

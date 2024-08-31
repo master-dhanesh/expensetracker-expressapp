@@ -34,28 +34,34 @@ router.get("/signin", async (req, res) => {
     });
 });
 
-// router.post("/signin", passport.authenticate("local"), async (req, res) => {
-//     try {
-//         res.redirect("/user/profile");
-//     } catch (error) {
-//         next(error);
-//     }
-// });
+router.post("/signin", passport.authenticate("local"), async (req, res) => {
+    try {
+        req.flash("success", "Successfully LoggedIn!");
+        res.redirect("/user/profile");
+    } catch (error) {
+        console.log(error);
+        next(error);
+        // res.redirect("/user/signin");
+    }
+});
 
-router.post(
-    "/signin",
-    passport.authenticate("local", {
-        successRedirect: "/user/profile",
-        failureRedirect: "/user/signin",
-    }),
-    (req, res) => {}
-);
+// router.post(
+//     "/signin",
+//     passport.authenticate("local", {
+//         successRedirect: "/user/profile",
+//         failureRedirect: "/user/signin",
+//     }),
+//     (req, res) => {}
+// );
 
 router.get("/profile", isLoggedIn, async (req, res) => {
     try {
+        const message = req.flash("success");
+
         res.render("profileuser", {
             title: "Expense Tracker | Profile",
             user: req.user,
+            message,
         });
     } catch (error) {
         next(error);

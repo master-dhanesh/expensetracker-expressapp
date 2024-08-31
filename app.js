@@ -9,6 +9,8 @@ const passport = require("passport");
 const session = require("express-session");
 const UserSchema = require("./models/user.schema");
 
+var flash = require("connect-flash");
+
 // db connection
 require("./config/db");
 
@@ -37,12 +39,19 @@ app.use(
         secret: process.env.EXPRESS_SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
+        // cookie: {
+        //     secure: false,
+        //     maxAge: 1000 * 60 * 60 * 24,
+        // },
     })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(UserSchema.serializeUser());
 passport.deserializeUser(UserSchema.deserializeUser());
+
+// connect flash
+app.use(flash());
 
 // base route
 app.use("/", indexRouter);
