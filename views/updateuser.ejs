@@ -1,0 +1,46 @@
+<%- include("partials/header")%> <%- include("partials/nav")%>
+<!--  -->
+<h1>Update User</h1>
+
+<img
+    class="avatar-preview w-[10vh] h-[10vh] rounded-full object-cover object-center"
+    src="<%= user.avatar%>"
+    alt=""
+/>
+<form class="hidden avatar-form" action="/user/avatar" method="post">
+    <input type="file" name="avatar" />
+</form>
+
+<hr class="m-auto w-[80%]" />
+<form action="/user/update" method="post">
+    <input
+        type="text"
+        name="username"
+        placeholder="johndoe"
+        value="<%= user.username%>"
+    />
+    <input
+        type="email"
+        name="email"
+        placeholder="john@doe.com"
+        value="<%= user.email%>"
+    />
+    <button>Update User Details</button>
+</form>
+
+<script>
+    const avatarPreview = document.querySelector(".avatar-preview");
+    const avatarForm = document.querySelector(".avatar-form");
+    const avatarInput = document.querySelector(".avatar-form input");
+
+    avatarPreview.addEventListener("click", () => {
+        avatarInput.click();
+    });
+
+    avatarInput.addEventListener("change", () => {
+        avatarForm.submit();
+    });
+</script>
+
+<!--  -->
+<%- include("partials/footer")%>

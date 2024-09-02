@@ -501,6 +501,39 @@ video {
   --tw-contain-paint:  ;
   --tw-contain-style:  ;
 }
+.m-auto {
+  margin: auto;
+}
+.flex {
+  display: flex;
+}
+.hidden {
+  display: none;
+}
+.h-\[10vh\] {
+  height: 10vh;
+}
+.w-\[10vh\] {
+  width: 10vh;
+}
+.w-\[80\%\] {
+  width: 80%;
+}
+.gap-x-10 {
+  -moz-column-gap: 2.5rem;
+       column-gap: 2.5rem;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.object-center {
+  -o-object-position: center;
+     object-position: center;
+}
 .text-5xl {
   font-size: 3rem;
   line-height: 1;

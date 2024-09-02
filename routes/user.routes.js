@@ -74,4 +74,59 @@ router.get("/signout", isLoggedIn, async (req, res) => {
     });
 });
 
+router.get("/reset-password", isLoggedIn, async (req, res) => {
+    res.render("resetpassworduser", {
+        title: "Expense Tracker | Reset Password",
+        user: req.user,
+    });
+});
+
+router.post("/reset-password", isLoggedIn, async (req, res) => {
+    try {
+        await req.user.changePassword(
+            req.body.oldpassword,
+            req.body.newpassword
+        );
+        await req.user.save();
+        res.redirect("/user/profile");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/delete-account", isLoggedIn, async (req, res) => {
+    try {
+        await UserSchema.findByIdAndDelete(req.user._id);
+        // code to delete profile pic
+        // code to delete all relaated expenses
+        res.redirect("/user/signin");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/update", isLoggedIn, async (req, res) => {
+    res.render("updateuser", {
+        title: "Expense Tracker | Update User",
+        user: req.user,
+    });
+});
+
+router.post("/update", isLoggedIn, async (req, res) => {
+    try {
+        await UserSchema.findByIdAndUpdate(req.user._id, req.body);
+        res.redirect("/user/profile");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/avatar", isLoggedIn, async (req, res) => {
+    try {
+        // user multer and req.file.filename and update to user
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;
