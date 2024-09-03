@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const UserSchema = require("../models/user.schema");
-const { isLoggedIn } = require("../middlewares/auth.middleware");
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 passport.use(new LocalStrategy(UserSchema.authenticate()));
 // passport.use(User.createStrategy()); // crediential other than username
+
+const { isLoggedIn } = require("../middlewares/auth.middleware");
+const upload = require("../middlewares/multimedia.middleware");
+const fs = require("fs");
 
 router.get("/signup", async (req, res) => {
     res.render("signupuser", {
@@ -96,8 +99,10 @@ router.post("/reset-password", isLoggedIn, async (req, res) => {
 
 router.get("/delete-account", isLoggedIn, async (req, res) => {
     try {
-        await UserSchema.findByIdAndDelete(req.user._id);
-        // code to delete profile pic
+        const user = await UserSchema.findByIdAndDelete(req.user._id);
+        if (user.avatar != "default.jpg") {
+            fs.unlinkSync(`public/images/${user.avatar}`);
+        }
         // code to delete all relaated expenses
         res.redirect("/user/signin");
     } catch (error) {
@@ -121,12 +126,22 @@ router.post("/update", isLoggedIn, async (req, res) => {
     }
 });
 
-router.post("/avatar", isLoggedIn, async (req, res) => {
-    try {
-        // user multer and req.file.filename and update to user
-    } catch (error) {
-        next(error);
+router.post(
+    "/avatar",
+    isLoggedIn,
+    upload.single("avatar"),
+    async (req, res) => {
+        try {
+            if (req.user.avatar != "default.jpg") {
+                fs.unlinkSync(`public/images/${req.user.avatar}`);
+            }
+            req.user.avatar = req.file.filename;
+            await req.user.save();
+            res.redirect("/user/update");
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 module.exports = router;

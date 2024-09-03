@@ -4,10 +4,15 @@
 
 <img
     class="avatar-preview w-[10vh] h-[10vh] rounded-full object-cover object-center"
-    src="<%= user.avatar%>"
+    src="/images/<%= user.avatar%>"
     alt=""
 />
-<form class="hidden avatar-form" action="/user/avatar" method="post">
+<form
+    class="hidden avatar-form"
+    action="/user/avatar"
+    method="post"
+    enctype="multipart/form-data"
+>
     <input type="file" name="avatar" />
 </form>
 
