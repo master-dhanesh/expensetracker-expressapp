@@ -144,4 +144,64 @@ router.post(
     }
 );
 
+router.get("/forget-password", async (req, res) => {
+    res.render("forgetpassword_email", {
+        title: "Expense Tracker | Forget Password",
+        user: req.user,
+    });
+});
+
+router.post("/forget-password", async (req, res, next) => {
+    try {
+        const user = await UserSchema.findOne({ email: req.body.email });
+        if (!user) return next(new Error("User not found!"));
+
+        // send email to user with otp
+        // and save the same otp to database
+
+        res.redirect(`/user/forget-password/${user._id}`);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/forget-password/:id", async (req, res) => {
+    res.render("forgetpassword_otp", {
+        title: "Expense Tracker | Forget Password",
+        user: req.user,
+        id: req.params.id,
+    });
+});
+
+router.post("/forget-password/:id", async (req, res, next) => {
+    try {
+        const user = await UserSchema.findById(req.params.id);
+
+        // compare the req.body.otp with the otp in database
+        // if matched redirect to password page else ERROR
+        res.redirect(`/user/set-password/${user._id}`);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/set-password/:id", async (req, res) => {
+    res.render("forgetpassword_password", {
+        title: "Expense Tracker | Set Password",
+        user: req.user,
+        id: req.params.id,
+    });
+});
+
+router.post("/set-password/:id", async (req, res, next) => {
+    try {
+        const user = await UserSchema.findById(req.params.id);
+        await user.setPassword(req.body.password);
+        await user.save();
+        res.redirect("/user/signin");
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;

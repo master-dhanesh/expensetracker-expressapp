@@ -1,13 +1,18 @@
 <%- include("partials/header")%> <%- include("partials/nav")%>
-        <!--  -->
-        <h1>Signin User</h1>
-        <form action="/user/signin" method="post">
-            <input type="text" name="username" placeholder="johndoe" />
-            <input type="password" name="password" placeholder="********" />
-            <button>Signin User</button>
-        </form>
+<!--  -->
+<h1>Signin User</h1>
+<form action="/user/signin" method="post">
+    <input type="text" name="username" placeholder="johndoe" />
+    <input type="password" name="password" placeholder="********" />
+    <button>Signin User</button>
+</form>
 
-        <p>Don't have an Account ? <a class="text-blue-400" href="/user/signup">Create One</a></p>
+<p><a href="/user/forget-password">Forget Password ?</a></p>
 
-        <!--  -->
-        <%- include("partials/footer")%>
+<p>
+    Don't have an Account ?
+    <a class="text-blue-400" href="/user/signup">Create One</a>
+</p>
+
+<!--  -->
+<%- include("partials/footer")%>
