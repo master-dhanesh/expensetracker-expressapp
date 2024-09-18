@@ -39,6 +39,7 @@ router.get("/signin", async (req, res) => {
 
 router.post("/signin", passport.authenticate("local"), async (req, res) => {
     try {
+        // set cache to store user details
         req.flash("success", "Successfully LoggedIn!");
         res.redirect("/user/profile");
     } catch (error) {
@@ -73,6 +74,7 @@ router.get("/profile", isLoggedIn, async (req, res) => {
 
 router.get("/signout", isLoggedIn, async (req, res) => {
     req.logout(() => {
+        // delete cache from redis
         res.redirect("/user/signin");
     });
 });
@@ -103,6 +105,7 @@ router.get("/delete-account", isLoggedIn, async (req, res) => {
         if (user.avatar != "default.jpg") {
             fs.unlinkSync(`public/images/${user.avatar}`);
         }
+        // delete cache from redis
         // code to delete all relaated expenses
         res.redirect("/user/signin");
     } catch (error) {
@@ -120,6 +123,7 @@ router.get("/update", isLoggedIn, async (req, res) => {
 router.post("/update", isLoggedIn, async (req, res) => {
     try {
         await UserSchema.findByIdAndUpdate(req.user._id, req.body);
+        // set cache to store user details with updated details
         res.redirect("/user/profile");
     } catch (error) {
         next(error);
@@ -137,6 +141,7 @@ router.post(
             }
             req.user.avatar = req.file.filename;
             await req.user.save();
+            // set cache to store user details with updated avatar
             res.redirect("/user/update");
         } catch (error) {
             next(error);
@@ -179,6 +184,8 @@ router.post("/forget-password/:id", async (req, res, next) => {
 
         // compare the req.body.otp with the otp in database
         // if matched redirect to password page else ERROR
+
+        // set cache to store user details with updated otp
         res.redirect(`/user/set-password/${user._id}`);
     } catch (error) {
         next(error);
@@ -198,6 +205,7 @@ router.post("/set-password/:id", async (req, res, next) => {
         const user = await UserSchema.findById(req.params.id);
         await user.setPassword(req.body.password);
         await user.save();
+        // set cache to store user details with updated password
         res.redirect("/user/signin");
     } catch (error) {
         next(error);

@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var client = require("../config/cache");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -68,6 +69,29 @@ router.get("/checkflash", function (req, res, next) {
 router.get("/destroyflash", function (req, res, next) {
     req.flash("info");
     res.status(200).json({ message: "Flash Message Destroyed" });
+});
+
+router.post("/createcache", function (req, res, next) {
+    // client.set("user:profile:12346", JSON.stringify("Bahut Important Data"));
+    client.setEx(
+        "user:profile:12346",
+        10,
+        JSON.stringify("Bahut Important Data")
+    );
+    res.status(200).json({ message: "Cache Created" });
+});
+
+router.get("/getcache", async function (req, res, next) {
+    const data = await client.get("user:profile:12346");
+    res.status(200).json({
+        message: "Cache Retrieved",
+        data: JSON.parse(data),
+    });
+});
+
+router.get("/delcache", async function (req, res, next) {
+    await client.del("user:profile:12346");
+    res.status(200).json({ message: "Cache Deleted" });
 });
 
 module.exports = router;

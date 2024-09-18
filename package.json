@@ -21,7 +21,8 @@
         "passport": "^0.7.0",
         "passport-local": "^1.0.0",
         "passport-local-mongoose": "^8.0.0",
-        "postcss-cli": "^11.0.0"
+        "postcss-cli": "^11.0.0",
+        "redis": "^4.7.0"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
