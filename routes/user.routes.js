@@ -9,6 +9,7 @@ passport.use(new LocalStrategy(UserSchema.authenticate()));
 
 const { isLoggedIn } = require("../middlewares/auth.middleware");
 const upload = require("../middlewares/multimedia.middleware");
+const imagekit = require("../config/imagekit");
 const fs = require("fs");
 
 router.get("/signup", async (req, res) => {
@@ -130,24 +131,41 @@ router.post("/update", isLoggedIn, async (req, res) => {
     }
 });
 
-router.post(
-    "/avatar",
-    isLoggedIn,
-    upload.single("avatar"),
-    async (req, res) => {
-        try {
-            if (req.user.avatar != "default.jpg") {
-                fs.unlinkSync(`public/images/${req.user.avatar}`);
-            }
-            req.user.avatar = req.file.filename;
-            await req.user.save();
-            // set cache to store user details with updated avatar
-            res.redirect("/user/update");
-        } catch (error) {
-            next(error);
-        }
+router.post("/avatar", isLoggedIn, async (req, res, next) => {
+    console.log(req.files);
+    try {
+        const result = await imagekit.upload({
+            file: req.files.avatar.data,
+            fileName: req.files.avatar.name,
+        });
+        console.log(result);
+        res.json(result);
+        // req.user.avatar = result.url;
+        // await req.user.save();
+        // res.redirect("/user/update");
+    } catch (error) {
+        next(error);
     }
-);
+});
+
+// router.post(
+//     "/avatar",
+//     isLoggedIn,
+//     upload.single("avatar"),
+//     async (req, res) => {
+//         try {
+//             if (req.user.avatar != "default.jpg") {
+//                 fs.unlinkSync(`public/images/${req.user.avatar}`);
+//             }
+//             req.user.avatar = req.file.filename;
+//             await req.user.save();
+//             // set cache to store user details with updated avatar
+//             res.redirect("/user/update");
+//         } catch (error) {
+//             next(error);
+//         }
+//     }
+// );
 
 router.get("/forget-password", async (req, res) => {
     res.render("forgetpassword_email", {

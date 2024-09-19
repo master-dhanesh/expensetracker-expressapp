@@ -9,6 +9,8 @@ const passport = require("passport");
 const session = require("express-session");
 const UserSchema = require("./models/user.schema");
 
+const fileupload = require("express-fileupload");
+
 var flash = require("connect-flash");
 
 // db connection
@@ -32,6 +34,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // static route
 app.use(express.static(path.join(__dirname, "public")));
+// file upload
+app.use(fileupload());
 
 // passport and session config
 app.use(

@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var client = require("../config/cache");
 
+const imagekit = require("../config/imagekit");
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
     res.render("index", {
@@ -92,6 +94,17 @@ router.get("/getcache", async function (req, res, next) {
 router.get("/delcache", async function (req, res, next) {
     await client.del("user:profile:12346");
     res.status(200).json({ message: "Cache Deleted" });
+});
+
+router.post("/imagekit", async function (req, res, next) {
+    try {
+        res.status(200).json({
+            message: "Image Uploaded",
+            res: req.files[0].avatar,
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = router;
