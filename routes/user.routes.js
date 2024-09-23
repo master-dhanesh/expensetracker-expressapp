@@ -132,17 +132,20 @@ router.post("/update", isLoggedIn, async (req, res) => {
 });
 
 router.post("/avatar", isLoggedIn, async (req, res, next) => {
-    console.log(req.files);
     try {
+        if (req.user.avatar.fileId) {
+            await imagekit.deleteFile(req.user.avatar.fileId);
+        }
+
         const result = await imagekit.upload({
             file: req.files.avatar.data,
             fileName: req.files.avatar.name,
         });
-        console.log(result);
-        res.json(result);
-        // req.user.avatar = result.url;
-        // await req.user.save();
-        // res.redirect("/user/update");
+        const { fileId, url, thumbnailUrl } = result;
+
+        req.user.avatar = { fileId, url, thumbnailUrl };
+        await req.user.save();
+        res.redirect("/user/update");
     } catch (error) {
         next(error);
     }

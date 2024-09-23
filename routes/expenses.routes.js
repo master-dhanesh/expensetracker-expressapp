@@ -13,7 +13,11 @@ router.get("/create", isLoggedIn, (req, res) => {
 router.post("/create", isLoggedIn, async (req, res, next) => {
     try {
         const newexpense = new ExpenseSchema(req.body);
+        newexpense.user = req.user._id;
         await newexpense.save();
+
+        req.user.expenses.push(newexpense._id);
+        await req.user.save();
         res.redirect("/expense/show");
     } catch (error) {
         next(error);
@@ -22,11 +26,9 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
 
 router.get("/show", isLoggedIn, async (req, res) => {
     try {
-        const expenses = await ExpenseSchema.find();
         res.render("showexpense", {
             title: "Expense Tracker | Watch Expense",
-            expenses: expenses,
-            user: req.user,
+            user: await req.user.populate("expenses"),
         });
     } catch (error) {
         next(error);
@@ -48,7 +50,11 @@ router.get("/details/:id", isLoggedIn, async (req, res) => {
 
 router.get("/delete/:id", isLoggedIn, async (req, res) => {
     try {
-        await ExpenseSchema.findByIdAndDelete(req.params.id);
+        const deletedExpense = await ExpenseSchema.findByIdAndDelete(
+            req.params.id
+        );
+        await req.user.expenses.pull(deletedExpense._id);
+        await req.user.save();
         res.redirect("/expense/show");
     } catch (error) {
         next(error);

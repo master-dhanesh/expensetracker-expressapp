@@ -33,6 +33,10 @@ const expenseSchema = new mongoose.Schema(
             required: [true, "Payment Mode is Required"],
             enum: ["Cash", "UPI", "Cheque", "Card"],
         },
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+        },
     },
     { timestamps: true }
 );

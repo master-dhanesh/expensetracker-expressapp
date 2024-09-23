@@ -1,18 +1,14 @@
-<%- include("partials/header")%>
-    <%- include("partials/nav")%>
-        <!--  -->
-        <h1>Watch Expense</h1>
-        <ul>
-            <% expenses.forEach(function(expense) { %>
-                <li>
+<%- include("partials/header")%> <%- include("partials/nav")%>
+<!--  -->
+<h1>Watch Expense</h1>
+<ul>
+    <% user.expenses.forEach(function(expense) { %>
+    <li>
+        <%= expense.title %> |
+        <a href="/expense/details/<%= expense.id%>">Details</a>
+    </li>
+    <% }) %>
+</ul>
 
-                    <%= expense.title %> |
-                        <a href="/expense/details/<%= expense.id%>">Details</a>
-
-
-                </li>
-                <% }) %>
-        </ul>
-
-        <!--  -->
-        <%- include("partials/footer")%>
+<!--  -->
+<%- include("partials/footer")%>
